@@ -28,7 +28,7 @@ Create Databricks secret scope using Terraform:
             # Configuration options
             host  = <--Databricks URL-->("https://adb-1639784005057929.9.azuredatabricks.net/")
             token = <--AAD TOKEN--> (use AAD TOKEN which is generated after logging into Azure)
-            }
+        }
     -   AAD Token can be set as variable and passed during the run time 
     -   Create a variable in variables.tf file so that the add token can be used during the run time.
             variable "databricks_aadtoken" {
@@ -36,7 +36,7 @@ Create Databricks secret scope using Terraform:
             }
     -   Use the variable in provider.tf file
     -   Use data block to get the databricks workspace url and pass the url in provider.tf file
-            provider "databricks" {
+        -   provider "databricks" {
                 # Configuration options
                 host = "https://${data.azurerm_databricks_workspace.name.workspace_url}/"
                 token = var.databricks_aadtoken
