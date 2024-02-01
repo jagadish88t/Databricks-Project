@@ -5,6 +5,7 @@ Agenda:
  - Create Databricks secret scope with backend as Azure key vault.
 
 Service Principal required for Terraform to create Databricks and it's secrets:
+
 	- Create a Service Principal and assign Role "Cloud Application Administrator".
 	- Service Principal used for creating Databricks and its secrets require "Cloud Application Administrator" Role.
     - Assign the Service Principal to Subscription with Contributor Access for creating resources.
@@ -55,6 +56,7 @@ Test access from Databricks to Key vault:
 
 
 Databricks CLI Setup on Local machine:
+
 	-   Download Databricks cli and install if not able to install cli and use .exe by setting it as environmental variable.
 	-   Download databricks cli from - https://docs.databricks.com/en/dev-tools/cli/install.html#:~:text=databricks_cli_X.Y.Z_windows_amd64.zip
 	-   Extract zip file and copy all files to C:\WorkSpace\databricks_cli
@@ -62,7 +64,8 @@ Databricks CLI Setup on Local machine:
 	-   Now databricks cli is ready to use.
 
 	
-Setup AAD Token for Databricks.
+Setup AAD Token for Databricks:
+
     -   Login to azure using azure cli. (az login)
     -   Get aad token using azure cli
         $aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
@@ -73,6 +76,7 @@ Setup AAD Token for Databricks.
 		
 			
 Databricks PAT token:
+
 	• Login to Databricks Workspace Ui from Azure Portal.
 	• Navigate to Admin Settings -> Developer -> Access tokens. Create one PAT token.
 
