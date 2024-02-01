@@ -1,6 +1,6 @@
 
 output "databricks_workspace_url" {
-  value = data.azurerm_databricks_workspace.name.workspace_url
+  value = data.azurerm_databricks_workspace.databricks_data.workspace_url
 }
 
 

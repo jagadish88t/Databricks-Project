@@ -40,7 +40,7 @@ resource "azurerm_key_vault_secret" "databricks_secret" {
   depends_on = [ azurerm_key_vault.kv_databricks ]
 }
 
-data "azurerm_databricks_workspace" "name" {
+data "azurerm_databricks_workspace" "databricks_data" {
   name = azurerm_databricks_workspace.workspace_databricks.name
   resource_group_name = azurerm_resource_group.rg_databricks.name
   //url = azurerm_databricks_workspace.workspace_databricks.workspace_url
