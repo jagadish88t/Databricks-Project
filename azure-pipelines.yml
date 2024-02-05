@@ -1,0 +1,72 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+variables:
+  - group: Terraformvariables
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: TerraformValidate
+  jobs:
+    - job: TerraformValidateJob
+      continueOnError: false
+      steps:
+      - script: |
+          git config --global url."https://oauth2:$(githubpat)@github.com/jagadish88t/Terraform-Modules.git".insteadOf "https://@github.com/jagadish88t/Terraform-Modules.git"
+        displayName: 'Authenticate to Git for Terraform'
+      - task: TerraformInstaller@0
+        displayName: Terraform Install
+        inputs:
+          terraformVersion: 'latest'
+
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
+        displayName: 'Check files before terraform init'
+      - task: TerraformTaskV4@4
+        displayName: 'Initialize terraform'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          commandOptions: '-upgrade'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+          backendServiceArm: 'Terraform'
+          backendAzureRmResourceGroupName: 'Terraformfiles'
+          backendAzureRmStorageAccountName: 'tfstatefileslearning'
+          backendAzureRmContainerName: 'terraformstatefiles'
+          backendAzureRmKey: 'databricksproject.tfstate'
+      
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
+        displayName: 'Check files after terraform init'
+      - task: TerraformTaskV4@4
+        displayName: 'Terraform validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+      
+      - task: TerraformTaskV4@4
+        displayName: Terraform plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+          commandOptions: '-var-file terraform.tfvars'
+          # commandOptions: '-var-file dev.tfvars'
+          environmentServiceNameAzureRM: 'Terraform'
+          backendAzureRmResourceGroupName: 'Terraformfiles'
+          backendAzureRmStorageAccountName: 'tfstatefileslearning'
+          backendAzureRmContainerName: 'terraformstatefiles'
+          backendAzureRmKey: 'databricksproject.tfstate'
+          
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
+        displayName: 'Check files after terraform plan'
