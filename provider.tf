@@ -39,7 +39,7 @@ provider "azurerm" {
 provider "databricks" {
   # Configuration options
   host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
-  token = var.databricks_aadtoken
+  # token = var.databricks_aadtoken
 }
 
 provider "random" {
