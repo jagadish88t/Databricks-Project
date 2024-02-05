@@ -51,6 +51,7 @@ data "azurerm_databricks_workspace" "databricks_data" {
 resource "databricks_secret_scope" "databricks_secret" {
   name = "terraform-test-scope"
   initial_manage_principal = "users"
+  backend_type = "AZURE_KEYVAULT"
   keyvault_metadata {
     resource_id = azurerm_key_vault.kv_databricks.id
     dns_name = azurerm_key_vault.kv_databricks.vault_uri
