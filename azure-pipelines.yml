@@ -57,7 +57,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'plan'
-          workingDirectory: '$(System.DefaultWorkingDirectory)/resources'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
           commandOptions: '-var-file terraform.tfvars'
           # commandOptions: '-var-file dev.tfvars'
           environmentServiceNameAzureRM: 'Terraform'
