@@ -19,6 +19,6 @@ variable "databricks_secret_name" {
 variable "databricks_secret_value" {
   type = string
 }
-variable "databricks_aadtoken" {
-  type = string
-}
+# variable "databricks_aadtoken" {
+#   type = string
+# }
