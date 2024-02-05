@@ -64,7 +64,7 @@ stages:
           backendAzureRmResourceGroupName: 'Terraformfiles'
           backendAzureRmStorageAccountName: 'tfstatefileslearning'
           backendAzureRmContainerName: 'terraformstatefiles'
-          backendAzureRmKey: 'defaultterraformplan.tfstate'
+          backendAzureRmKey: 'databricksproject.tfstate'
           
       - script: |
           cd '$(System.DefaultWorkingDirectory)/'
