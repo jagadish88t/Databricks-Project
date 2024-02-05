@@ -1,0 +1,7 @@
+rg_name         = "databricksrg"
+rg_location     = "eastus"
+databricks_name = "testdatabricksvdot"
+databricks_sku  = "standard"
+kv_name         = "databrickskv"
+databricks_secret_name = "databrickssecret"
+databricks_secret_value = "databrickssecretvalue"
