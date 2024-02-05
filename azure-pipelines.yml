@@ -27,3 +27,46 @@ stages:
       - script: |
           cd '$(System.DefaultWorkingDirectory)/'
           ls *
+        displayName: 'Check files before terraform init'
+      - task: TerraformTaskV4@4
+        displayName: 'Initialize terraform'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          commandOptions: '-upgrade'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+          backendServiceArm: 'Terraform'
+          backendAzureRmResourceGroupName: 'Terraformfiles'
+          backendAzureRmStorageAccountName: 'tfstatefileslearning'
+          backendAzureRmContainerName: 'terraformstatefiles'
+          backendAzureRmKey: 'databricksproject.tfstate'
+      
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
+        displayName: 'Check files after terraform init'
+      - task: TerraformTaskV4@4
+        displayName: 'Terraform validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+      
+      - task: TerraformTaskV4@4
+        displayName: Terraform plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/resources'
+          commandOptions: '-var-file terraform.tfvars'
+          # commandOptions: '-var-file dev.tfvars'
+          environmentServiceNameAzureRM: 'Terraform'
+          backendAzureRmResourceGroupName: 'Terraformfiles'
+          backendAzureRmStorageAccountName: 'tfstatefileslearning'
+          backendAzureRmContainerName: 'terraformstatefiles'
+          backendAzureRmKey: 'defaultterraformplan.tfstate'
+          
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
+        displayName: 'Check files after terraform plan'
