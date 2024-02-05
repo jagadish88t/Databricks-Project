@@ -6,7 +6,6 @@ $tenantId = ""
 $clientId = ""
 $clientSecret = ""
 
-
 if ($Perform -eq "apply") {
     <# Action to perform if the condition is true #>
     try {
@@ -33,8 +32,8 @@ if ($Perform -eq "apply") {
         terraform apply -auto-approve -var-file ./terraform.tfvars -var "databricks_aadtoken=$aadtoken"
 
         #Method 2
-        terraform plan -var-file ./terraform.tfvars -var "databricks_aadtoken=$aadtoken" -out tfplan
-        terraform apply tfplan
+        #terraform plan -var-file ./terraform.tfvars -var "databricks_aadtoken=$aadtoken" -out tfplan
+        #terraform apply tfplan
     }
     catch {
         <#Do this if a terminating exception happens#>
