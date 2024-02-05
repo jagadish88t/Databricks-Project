@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+variables:
+  - group: Terraformvariables
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: TerraformValidate
+  jobs:
+    - job: TerraformValidateJob
+      continueOnError: false
+      steps:
+      - script: |
+          git config --global url."https://oauth2:$(githubpat)@github.com/jagadish88t/Terraform-Modules.git".insteadOf "https://@github.com/jagadish88t/Terraform-Modules.git"
+        displayName: 'Authenticate to Git for Terraform'
+      - task: TerraformInstaller@0
+        displayName: Terraform Install
+        inputs:
+          terraformVersion: 'latest'
+
+      - script: |
+          cd '$(System.DefaultWorkingDirectory)/'
+          ls *
