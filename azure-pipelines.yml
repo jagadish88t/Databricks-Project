@@ -11,14 +11,11 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: TerraformValidate
+- stage: Dev
   jobs:
-    - job: TerraformValidateJob
+    - job: TerraformCreateResources
       continueOnError: false
       steps:
-      - script: |
-          git config --global url."https://oauth2:$(githubpat)@github.com/jagadish88t/Terraform-Modules.git".insteadOf "https://@github.com/jagadish88t/Terraform-Modules.git"
-        displayName: 'Authenticate to Git for Terraform'
       - task: TerraformInstaller@0
         displayName: Terraform Install
         inputs:
@@ -51,6 +48,8 @@ stages:
           provider: 'azurerm'
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
+      #  AAD Token creation task is not required as Service Principal is already been in use.
+      #  Creating the AAD Token will cause multi credentials login error.
       # - task: AzureCLI@2
       #   inputs:
       #     azureSubscription: 'terraform-databricks'
@@ -62,19 +61,15 @@ stages:
       # - script: |
       #     echo $(databricks_token)
       #   displayName: 'Print AAD token'
+      
       - task: TerraformTaskV4@4
         displayName: Terraform plan
         inputs:
           provider: 'azurerm'
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
-          # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
           commandOptions: '-var-file terraform.tfvars'
           environmentServiceNameAzureRM: 'terraform-databricks'
-          # backendAzureRmResourceGroupName: 'Terraformfiles'
-          # backendAzureRmStorageAccountName: 'tfstatefileslearning'
-          # backendAzureRmContainerName: 'terraformstatefiles'
-          # backendAzureRmKey: 'databricksproject.tfstate'
           
       - script: |
           cd '$(System.DefaultWorkingDirectory)/'
@@ -88,9 +83,4 @@ stages:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
           commandOptions: '-auto-approve -var-file terraform.tfvars'
-            # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
           environmentServiceNameAzureRM: 'terraform-databricks'
-      #     backendAzureRmResourceGroupName: 'Terraformfiles'
-      #     backendAzureRmStorageAccountName: 'tfstatefileslearning'
-      #     backendAzureRmContainerName: 'terraformstatefiles'
-      #     backendAzureRmKey: 'databricksproject.tfstate'
