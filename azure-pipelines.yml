@@ -81,15 +81,15 @@ stages:
           ls *
         displayName: 'Check files after terraform plan'
       
-       - task: TerraformTaskV4@4
-         displayName: Terraform apply
-         inputs:
-           provider: 'azurerm'
-           command: 'apply'
-           workingDirectory: '$(System.DefaultWorkingDirectory)/'
-      #     # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
-           commandOptions: '-auto-approve -var-file terraform.tfvars'
-           environmentServiceNameAzureRM: 'terraform-databricks'
+      - task: TerraformTaskV4@4
+        displayName: Terraform apply
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/'
+          commandOptions: '-auto-approve -var-file terraform.tfvars'
+            # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
+          environmentServiceNameAzureRM: 'terraform-databricks'
       #     backendAzureRmResourceGroupName: 'Terraformfiles'
       #     backendAzureRmStorageAccountName: 'tfstatefileslearning'
       #     backendAzureRmContainerName: 'terraformstatefiles'
