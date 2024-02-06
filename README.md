@@ -105,10 +105,12 @@ Create Databricks and databricks secret scope using Terraform and Azure DevOps
 	│   with provider["registry.terraform.io/databricks/databricks"],
 	│   on provider.tf line 25, in provider "databricks":
 	│   25: provider "databricks" {
--	```provider "databricks" {
-	  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
-	  // token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
-	}```
+-	```
+	  	provider "databricks" {
+		  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
+		  // token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
+		}
+  	```
 -	To run the pipeline successfully Service Principal require "Cloud Application Administrator" role.
 -	All resources will be created as required.
 -	Testing can be done by using Databricks PAT token and Databricks cli from local machine.
