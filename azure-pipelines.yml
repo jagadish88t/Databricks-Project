@@ -33,7 +33,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
-          commandOptions: '-upgrade'
+          commandOptions: '-migrate-state'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
           backendServiceArm: 'terraform-databricks'
           backendAzureRmResourceGroupName: 'Terraformfiles'
