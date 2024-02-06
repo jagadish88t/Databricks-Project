@@ -70,11 +70,11 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
           # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
           commandOptions: '-var-file terraform.tfvars'
-          environmentServiceNameAzureRM: 'terraform-databricks'
-          backendAzureRmResourceGroupName: 'Terraformfiles'
-          backendAzureRmStorageAccountName: 'tfstatefileslearning'
-          backendAzureRmContainerName: 'terraformstatefiles'
-          backendAzureRmKey: 'databricksproject.tfstate'
+          # environmentServiceNameAzureRM: 'terraform-databricks'
+          # backendAzureRmResourceGroupName: 'Terraformfiles'
+          # backendAzureRmStorageAccountName: 'tfstatefileslearning'
+          # backendAzureRmContainerName: 'terraformstatefiles'
+          # backendAzureRmKey: 'databricksproject.tfstate'
           
       - script: |
           cd '$(System.DefaultWorkingDirectory)/'
