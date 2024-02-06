@@ -14,17 +14,6 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    tenant_id = ""
-    client_id = ""
-    client_secret = ""
-    subscription_id = ""
-
-    resource_group_name = "Terraformfiles"
-    storage_account_name = "tfstatefileslearning"
-    container_name = "terraformstatefiles"
-    key = "databricks.tfstate"
-  }
 }
 
 provider "azurerm" {
