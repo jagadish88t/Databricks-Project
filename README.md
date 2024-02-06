@@ -26,12 +26,12 @@ Create Databricks secret scope using Terraform:
         $aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
 - Create provider.tf file with required providers. In provider "databricks" {} fill the required data as below
     
-    -	```
+  ```
    	provider "databricks" {
             host  = <--Databricks URL-->("https://adb-1639784005057929.9.azuredatabricks.net/")
             token = <--AAD TOKEN--> (use AAD TOKEN which is generated after logging into Azure)
 	}
-  	```
+  ```
     -   AAD Token can be set as variable and passed during the run time 
     -   Create a variable in variables.tf file so that the add token can be used during the run time.
 	```
