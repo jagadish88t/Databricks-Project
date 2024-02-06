@@ -48,6 +48,7 @@ stages:
           provider: 'azurerm'
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
+      
       #  AAD Token creation task is not required as Service Principal is already been in use.
       #  Creating the AAD Token will cause multi credentials login error.
       # - task: AzureCLI@2
