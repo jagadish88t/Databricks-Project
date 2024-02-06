@@ -4,7 +4,7 @@ Agenda:
  - Create Azure Key Vault.
  - Create Databricks secret scope with backend as Azure key vault.
 
-Service Principal required for Terraform to create Databricks and it's secrets:
+# Service Principal required for Terraform to create Databricks and it's secrets:
 
 - Create a Service Principal and assign Role "Cloud Application Administrator".
 - Service Principal used for creating Databricks and its secrets require "Cloud Application Administrator" Role.
@@ -18,7 +18,7 @@ Service Principal required for Terraform to create Databricks and it's secrets:
         https://learn.microsoft.com/en-us/azure/databricks/dev-tools/service-prin-aad-token#:~:text=Generate%20the%20Microsoft%20Entra%20ID%20access%20token%20for%20the%20signed%2Din%20Microsoft%20Entra%20ID%20service%20principal%20by%20running%20the
 
 
-Create Databricks secret scope using Terraform from Local machine:
+# Create Databricks secret scope using Terraform from Local machine:
 
 - Login to Azure using azure cli using Service Principal
 	```
@@ -71,7 +71,7 @@ Test access from Databricks to Key vault:
 	dbutils.secrets.get(scope="scope_name", key = "kv_secret_name")
 	```
 
-Databricks CLI Setup on Local machine:
+# Databricks CLI Setup on Local machine:
 
 -   Download Databricks cli and install if not able to install cli and use .exe by setting it as system environmental variable on windows.
 -   Download databricks cli from - https://docs.databricks.com/en/dev-tools/cli/install.html#:~:text=databricks_cli_X.Y.Z_windows_amd64.zip
@@ -80,7 +80,7 @@ Databricks CLI Setup on Local machine:
 -   Now databricks cli is ready to use.
 
 	
-Setup AAD Token for Databricks:
+# Setup AAD Token for Databricks:
 
 -   Login to azure using azure cli. (az login)
 -   Get aad token using azure cli
@@ -92,29 +92,34 @@ Setup AAD Token for Databricks:
 	Get-ChildItem -Path Env:
  	```
 			
-Databricks PAT token:
+# Create Databricks PAT token:
 
 -   Login to Databricks Workspace Ui from Azure Portal.
 -   Navigate to Admin Settings -> Developer -> Access tokens. Create one PAT token.
 
-Create Databricks secret scope using Databricks CLI:
+# Create Databricks secret scope using Databricks CLI:
 
 -   Use Databricks CLI on local machine:
     -   Login to Databricks
-        -   Use command - databricks configure
-            -   It will ask for host and PAT token 
-                -   Host - https://adb-1639784005057929.9.azuredatabricks.net/ (databricks url)
-                -   Token - Use Databricks PAT token
+        -   Use below command it will ask for host and PAT token
+	```
+	databricks configure
+	Host - https://adb-1639784005057929.9.azuredatabricks.net/ (databricks url)
+	Token - Use Databricks PAT token
+ 	``` 
     -   Create secret scope
             Create scope command will use the environment variable "DATABRICKS_TOKEN" which is already created and stored.
             If any issues occurred, then recreate the environment variable "DATABRICKS_TOKEN" by following above mentioned process.
             Store all required information for creating Azure Key Vault backed secret scope in json file and store it locally. This file path will be used later for creating secret scope.
             
-    -   Use command 
-            databricks secrets create-scope --json @filepath\databrickssecretscope.json --initial-manage-principal users
+    -   Use command to create secret scope
+	```
+ 	databricks secrets create-scope --json @filepath\databrickssecretscope.json --initial-manage-principal users
+ 	```
 
 
-Create Databricks and databricks secret scope using Terraform and Azure DevOps
+# Create Databricks and databricks secret scope using Terraform and Azure DevOps
+
 -	While running Terraform on ADO for creating Databricks secret scope it does not require aadtoken.
 -	As the terraform task already uses Service Principal it will get conflict if using AADToken again.
 	-	If we use AAD token creation and use that to run terraform apply. Pipeline will fail with below error
