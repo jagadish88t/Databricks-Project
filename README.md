@@ -52,12 +52,12 @@ Create Databricks secret scope using Terraform from Local machine:
 	}
  	```
     -   During the terraform apply use the following command
-        -   For creating resource 
+	-	For creating resource 
 	```
 	terraform apply -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
   	```
 
-  	-   For destroying the resource
+	-	For destroying the resource
    	```
 	terraform apply -destroy -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
   	```
