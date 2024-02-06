@@ -61,8 +61,7 @@ stages:
       #       echo "##vso[task.setvariable variable=databricks_token;]$aadtoken"
       # - script: |
       #     echo $(databricks_token)
-
-        displayName: 'Print AAD token'
+      #   displayName: 'Print AAD token'
       - task: TerraformTaskV4@4
         displayName: Terraform plan
         inputs:
