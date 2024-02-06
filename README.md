@@ -51,7 +51,7 @@ Create Databricks secret scope using Terraform from Local machine:
 		token = var.databricks_aadtoken
 	}
  	```
-    -   During the terraform apply use the following command
+- During the terraform apply use the following command
 	-	For creating resource 
 	```
 	terraform apply -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
@@ -126,7 +126,7 @@ Create Databricks and databricks secret scope using Terraform and Azure DevOps
 -	```
 	provider "databricks" {
 	  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
-	  // token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
+	  # token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
 	}
   	```
 -	To run the pipeline successfully Service Principal require "Cloud Application Administrator" role.
