@@ -51,25 +51,25 @@ stages:
           provider: 'azurerm'
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
-      # - task: AzureCLI@2
-      #   inputs:
-      #     azureSubscription: 'terraform-databricks'
-      #     scriptType: 'bash'
-      #     scriptLocation: 'inlineScript'
-      #     inlineScript: |
-      #       aadtoken=`az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv`
-      #       echo "##vso[task.setvariable variable=databricks_token;]$aadtoken"
-      # - script: |
-      #     echo $(databricks_token)
-      #   displayName: 'Print AAD token'
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'terraform-databricks'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            aadtoken=`az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv`
+            echo "##vso[task.setvariable variable=databricks_token;]$aadtoken"
+      - script: |
+          echo $(databricks_token)
+        displayName: 'Print AAD token'
       - task: TerraformTaskV4@4
         displayName: Terraform plan
         inputs:
           provider: 'azurerm'
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
-          # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
-          commandOptions: '-var-file terraform.tfvars'
+          commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
+          # commandOptions: '-var-file terraform.tfvars'
           environmentServiceNameAzureRM: 'terraform-databricks'
           # backendAzureRmResourceGroupName: 'Terraformfiles'
           # backendAzureRmStorageAccountName: 'tfstatefileslearning'
@@ -87,8 +87,8 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/'
-          # commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
-          commandOptions: '-auto-approve -var-file terraform.tfvars'
+          commandOptions: '-var-file terraform.tfvars -var "databricks_aadtoken=$(databricks_token)"'
+          # commandOptions: '-auto-approve -var-file terraform.tfvars'
           environmentServiceNameAzureRM: 'terraform-databricks'
       #     backendAzureRmResourceGroupName: 'Terraformfiles'
       #     backendAzureRmStorageAccountName: 'tfstatefileslearning'

@@ -14,17 +14,6 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    tenant_id = "4a1c61bf-11d9-4bcc-8493-2d40bb0e45b7"
-    client_id = "e21fc4cc-3424-40d2-af2d-b86dc784e727"
-    client_secret = "23K8Q~JEv6lrnUYHvXiyJtnIvHIDXZQRTIklybmb"
-    subscription_id = "63bd2eef-d99c-4b36-a3b0-b89c12000aa7"
-
-    resource_group_name = "Terraformfiles"
-    storage_account_name = "tfstatefileslearning"
-    container_name = "terraformstatefiles"
-    key = "databricksproject.tfstate"
-  }
 }
 
 provider "azurerm" {
@@ -35,8 +24,8 @@ provider "azurerm" {
 
 provider "databricks" {
   # Configuration options
-  # host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
-  # token = var.databricks_aadtoken
+  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
+  token = var.databricks_aadtoken
 }
 
 provider "random" {
