@@ -12,7 +12,7 @@ Service Principal required for Terraform to create Databricks and it's secrets:
 - Login to azure using Service Principal.
 - Create AAD Token and use that token for creating Databricks secrets.
   	```
-      		$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
+	$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
   	```
     - resource "2ff814a6-3304-4ab8-85cb-cd0e6f879c1d" is unique to Databricks 
         https://learn.microsoft.com/en-us/azure/databricks/dev-tools/service-prin-aad-token#:~:text=Generate%20the%20Microsoft%20Entra%20ID%20access%20token%20for%20the%20signed%2Din%20Microsoft%20Entra%20ID%20service%20principal%20by%20running%20the
@@ -22,43 +22,43 @@ Create Databricks secret scope using Terraform from Local machine:
 
 - Login to Azure using azure cli using Service Principal
 	```
-    		az login --service-principal -t $tenantId -u $clientId -p $clientSecret
+	az login --service-principal -t $tenantId -u $clientId -p $clientSecret
  	```
 - Generate AAD Token
 	```
-        	$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
+	$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
  	```
 - Create provider.tf file with required providers. In provider "databricks" {} fill the required data as below  
   	```
-	  	provider "databricks" {
-	  		host  = <--Databricks URL-->("https://adb-1639784005057929.9.azuredatabricks.net/")
-	  		token = <--AAD TOKEN--> (use AAD TOKEN which is generated after logging into Azure)
-		}
+	provider "databricks" {
+		host  = <--Databricks URL-->("https://adb-1639784005057929.9.azuredatabricks.net/")
+		token = <--AAD TOKEN--> (use AAD TOKEN which is generated after logging into Azure)
+	}
   	```
     -   AAD Token can be set as variable and passed during the run time 
     -   Create a variable in variables.tf file so that the add token can be used during the run time.
 	```
-		variable "databricks_aadtoken" {
-			type = string
-	    	}
+	variable "databricks_aadtoken" {
+		type = string
+	}
   	```
     -   Use the variable in provider.tf file
     -   Use data block to get the databricks workspace url and pass the url in provider.tf file
 	```
-		provider "databricks" {
-			# Configuration options
-			host = "https://${data.azurerm_databricks_workspace.name.workspace_url}/"
-			token = var.databricks_aadtoken
-		}
+	provider "databricks" {
+		# Configuration options
+		host = "https://${data.azurerm_databricks_workspace.name.workspace_url}/"
+		token = var.databricks_aadtoken
+	}
  	```
     -   During the terraform apply use the following command
         -   For creating resource 
 	```
-    		terraform apply -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
+	terraform apply -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
   	```
         -   For destroying the resource
    	```
-                terraform apply -destroy -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
+	terraform apply -destroy -auto-approve -var-file .\terraform.tfvars -var "databricks_aadtoken=$aadtoken"
   	```
 
 Test access from Databricks to Key vault:
@@ -66,8 +66,8 @@ Test access from Databricks to Key vault:
 -   Navigate to Databricks workspace and create new notebook.
 -   use dbutils to get the details from secrets
 	```
-        	dbutils.secrets.listscopes()
-        	dbutils.secrets.get(scope="scope_name", key = "kv_secret_name")
+	dbutils.secrets.listscopes()
+	dbutils.secrets.get(scope="scope_name", key = "kv_secret_name")
 	```
 
 Databricks CLI Setup on Local machine:
@@ -86,9 +86,9 @@ Setup AAD Token for Databricks:
 -   Store this token as environment variable
 -   Verify environment variables using 
 	```
-    		$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
- 		Set-Item -Path Env:DATABRICKS_TOKEN -Value ($Env:DATABRICKS_TOKEN + "$aadtoken")
- 		Get-ChildItem -Path Env:
+	$aadtoken = az account get-access-token --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d --query "accessToken" -o tsv
+	Set-Item -Path Env:DATABRICKS_TOKEN -Value ($Env:DATABRICKS_TOKEN + "$aadtoken")
+	Get-ChildItem -Path Env:
  	```
 			
 Databricks PAT token:
@@ -123,10 +123,10 @@ Create Databricks and databricks secret scope using Terraform and Azure DevOps
 	│   on provider.tf line 25, in provider "databricks":
 	│   25: provider "databricks" {
 -	```
-	  	provider "databricks" {
-		  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
-		  // token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
-		}
+	provider "databricks" {
+	  host = "https://${data.azurerm_databricks_workspace.databricks_data.workspace_url}/"
+	  // token = var.databricks_aadtoken // token is not required when running the terraform code on ADO. As the Service Principal is going to be used during the runtime operations.
+	}
   	```
 -	To run the pipeline successfully Service Principal require "Cloud Application Administrator" role.
 -	All resources will be created as required.
