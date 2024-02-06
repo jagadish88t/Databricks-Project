@@ -25,7 +25,6 @@ Create Databricks secret scope using Terraform:
 - Create provider.tf file with required providers. In provider "databricks" {} fill the required data as below
     
     -    provider "databricks" {
-            # Configuration options
             host  = <--Databricks URL-->("https://adb-1639784005057929.9.azuredatabricks.net/")
             token = <--AAD TOKEN--> (use AAD TOKEN which is generated after logging into Azure)
         }
@@ -57,7 +56,7 @@ Test access from Databricks to Key vault:
 
 Databricks CLI Setup on Local machine:
 
--   Download Databricks cli and install if not able to install cli and use .exe by setting it as environmental variable.
+-   Download Databricks cli and install if not able to install cli and use .exe by setting it as system environmental variable on windows.
 -   Download databricks cli from - https://docs.databricks.com/en/dev-tools/cli/install.html#:~:text=databricks_cli_X.Y.Z_windows_amd64.zip
 -   Extract zip file and copy all files to C:\WorkSpace\databricks_cli
 -   Set Environment variable variable_name = databricks, value = C:\WorkSpace\databricks_cli
@@ -95,4 +94,18 @@ Create Databricks secret scope using Databricks CLI:
             
     -   Use command 
             databricks secrets create-scope --json @filepath\databrickssecretscope.json --initial-manage-principal users
-		
+
+
+Create Databricks and databricks secret scope using Terraform and Azure DevOps
+-	While running Terraform on ADO for creating Databricks secret scope it does not require aadtoken.
+-	As the terraform task already uses Service Principal it will get conflict if using AADToken again.
+	-	If we use AAD token creation and use that to run terraform apply. Pipeline will fail with below error
+	-	Error: validate: more than one authorization method configured: azure and pat. Config: token=***, azure_client_secret=***, azure_client_id=***, azure_tenant_id=*******. Env: DATABRICKS_TOKEN, ARM_CLIENT_SECRET, ARM_CLIENT_ID, ARM_TENANT_ID
+	│ 
+	│   with provider["registry.terraform.io/databricks/databricks"],
+	│   on provider.tf line 25, in provider "databricks":
+	│   25: provider "databricks" {
+-	To run the pipeline successfully Service Principal require "Cloud Application Administrator" role.
+-	All resources will be created as required.
+-	Testing can be done by using Databricks PAT token and Databricks cli from local machine.
+  
